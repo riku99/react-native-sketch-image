@@ -43,7 +43,7 @@ export default class RNImageEditor extends React.Component {
             shapeBorderStyle: PropTypes.string,
             shapeBorderStrokeWidth: PropTypes.number,
             shapeColor: PropTypes.string,
-            shapeStrokeWidth: PropTypes.number
+            shapeStrokeWidth: PropTypes.number,
         }),
 
         text: PropTypes.arrayOf(
@@ -57,17 +57,17 @@ export default class RNImageEditor extends React.Component {
                 position: PropTypes.shape({ x: PropTypes.number, y: PropTypes.number }),
                 coordinate: PropTypes.oneOf(["Absolute", "Ratio"]),
                 alignment: PropTypes.oneOf(["Left", "Center", "Right"]),
-                lineHeightMultiple: PropTypes.number
+                lineHeightMultiple: PropTypes.number,
             })
         ),
         localSourceImage: PropTypes.shape({
             filename: PropTypes.string,
             directory: PropTypes.string,
-            mode: PropTypes.string
+            mode: PropTypes.string,
         }),
 
         permissionDialogTitle: PropTypes.string,
-        permissionDialogMessage: PropTypes.string
+        permissionDialogMessage: PropTypes.string,
     };
 
     static defaultProps = {
@@ -110,7 +110,7 @@ export default class RNImageEditor extends React.Component {
             { color: "#A52A2A" },
             { color: "#800000" },
             { color: "#008000" },
-            { color: "#808000" }
+            { color: "#808000" },
         ],
         alphlaValues: ["33", "77", "AA", "FF"],
         defaultStrokeIndex: 0,
@@ -128,14 +128,14 @@ export default class RNImageEditor extends React.Component {
             shapeBorderStyle: "Dashed",
             shapeBorderStrokeWidth: 1,
             shapeColor: "#000000",
-            shapeStrokeWidth: 3
+            shapeStrokeWidth: 3,
         },
 
         text: null,
         localSourceImage: null,
 
         permissionDialogTitle: "",
-        permissionDialogMessage: ""
+        permissionDialogMessage: "",
     };
 
     constructor(props) {
@@ -144,7 +144,7 @@ export default class RNImageEditor extends React.Component {
         this.state = {
             color: props.strokeColors[props.defaultStrokeIndex].color,
             strokeWidth: props.defaultStrokeWidth,
-            alpha: "FF"
+            alpha: "FF",
         };
 
         this._colorChanged = false;
@@ -237,6 +237,10 @@ export default class RNImageEditor extends React.Component {
         this.setState({ strokeWidth: this.state.strokeWidth + this._strokeWidthStep });
     }
 
+    _nextStrokeWidth = (n) => {
+        this.setState({ strokeWidth: n });
+    };
+
     _renderItem = ({ item, index }) => (
         <TouchableOpacity
             style={{ marginHorizontal: 2.5 }}
@@ -313,13 +317,14 @@ export default class RNImageEditor extends React.Component {
                     </View>
                     <View style={{ flexDirection: "row", flex: 1, justifyContent: "flex-end" }}>
                         {this.props.strokeWidthComponent && (
-                            <TouchableOpacity
-                                onPress={() => {
-                                    this.nextStrokeWidth();
-                                }}
-                            >
-                                {this.props.strokeWidthComponent(this.state.strokeWidth)}
-                            </TouchableOpacity>
+                            // <TouchableOpacity
+                            //     onPress={() => {
+                            //         this.nextStrokeWidth();
+                            //     }}
+                            // >
+                            //     {this.props.strokeWidthComponent(this.state.strokeWidth)}
+                            // </TouchableOpacity>
+                            <View>{this.props.strokeWidthComponent(this._nextStrokeWidth)}</View>
                         )}
 
                         {this.props.undoComponent && (
